@@ -1,0 +1,9 @@
+# train and val datasets (image directory or *.txt file with image paths)
+train: /content/images/train/
+val: /content/images/valid/
+
+# number of classes
+nc: 1
+
+# class names
+names: ['wheat']
