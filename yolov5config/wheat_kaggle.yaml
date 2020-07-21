@@ -1,9 +1,0 @@
-# train and val datasets (image directory or *.txt file with image paths)
-train: /kaggle/working/gwdsplit/images/train/
-val: /kaggle/working/gwdsplit/images/valid/
-
-# number of classes
-nc: 1
-
-# class names
-names: ['wheat']
