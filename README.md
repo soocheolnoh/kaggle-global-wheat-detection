@@ -1,6 +1,36 @@
-# Deadline: 2020-08-05 AM 09:00
+# Final Review (2020-08-21)
+* 최종 결과: 86/2245, top 4% 달성 (은메달)
+  * public 216/2245에서 big shakeup
+* big shakeup의 이유?
+  * 다른 사람들이 무리하게 PL을 진행하여 public을 올리지 않았을까?
 
-# Review
+| Model | Public (Before Corrected) | Public (After Corrected) | Private (After Corrected) |
+| :--- | :---: | :---: | :---:|
+| EffDet-d5, 1024                       | < 0.74 | 0.7396 | 0.6118 |
+| EffDet-d5, 1024 + PL 1 round 5 epochs | 0.7415 | 0.7254 | 0.6540 |
+
+* PL은 어떻게 진행했어야 했을까?
+  * 5 epochs도 많은 것 같음
+  * training data + 2 * test data를 이용하여 1 epoch 느낌으로, 아주 조금 tuning 하는 정도로 해야 성능이 나올 것 같음
+  * learning rate의 잘못된 사용?
+    * 나는 실제 model train/valid 구현 위치에서 load해서 하였는데, HeadNet 불러오는 것에서 load했어야
+  * 똑같이 valid set을 이용하여 overfit하지 않았는지 확인했어야 함
+    * test set에서도 valid set을 구분했어야, 결국 valid set = train set / 5 + test set / 5
+    * OOF를 진행했다면, valid set을 어떻게 사용했어야 했을까?: 하나의 fold만 사용할 수밖에 없을 것 같음
+* TTA 단계에서의 cutout
+  * 4개의 꼭지점에서의 cutout을 사용해 TTA 40을 사용하는 방법은 꽤 효과가 있어 보임
+  * 해당 model은 private 39/2245로 top 2%에 해당
+  * 경계 조건을 0.5로 준 것인데도, 실제 test image 상에서 오류가 있었으므로, 넉넉하게 2를 준다면, 더 상향될 것으로 보임
+  
+| Model | Public (Before Corrected) | Public (After Corrected) | Private (After Corrected) |
+| :--- | :---: | :---: | :---:|
+| EffDet-d5, 1024 + TTA40 | < 0.74 | 0.7342 | 0.6618 |
+
+* 전처리
+  * 작은 bbox를 없애는 전처리는 실제 수정되기 전 public에서는 성능이 떨어졌지만, 수정 후라면 상향 됐을 수도 있음
+  * 이외에 다른 방법이 있었을지 고민해볼 필요가 있음
+
+# Review after Deadline (2020-08-06)
 * 목표했던 10%는 달성하기 힘들어 보임 (한 10-20% 예상됨)
 * 사용했던 모델은 yolov5, efficientdet
   * yolov5를 처음에 사용했으나, license 문제로 out
